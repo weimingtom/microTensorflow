@@ -27,6 +27,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade six
+          
       - name: generate projects
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile generate_hello_world_make_project 
 
@@ -36,7 +37,7 @@ jobs:
       - name: copy 3rd party over
         run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party .
         
-        name: remove tensorflow
+      - name: remove tensorflow
         run: rm -rf tensorflow-master
 
       - name: Commit files
