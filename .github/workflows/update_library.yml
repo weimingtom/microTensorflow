@@ -35,6 +35,9 @@ jobs:
 
       - name: copy 3rd party over
         run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party .
+        
+        name: remove tensorflow
+        run: rm -rf tensorflow-master
 
       - name: Commit files
         run: |
