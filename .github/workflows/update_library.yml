@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Tensorflow
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
         with:
           repository: tensorflow/tensorflow
           path: ./tensorflow-master
@@ -38,12 +38,15 @@ jobs:
         run: rm -rf tensorflow-master
 
       - name: Commit files
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add .
           git commit -m "Update tflite-micro"
-      
+ 
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
