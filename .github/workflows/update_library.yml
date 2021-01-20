@@ -11,6 +11,12 @@ jobs:
   clone_tensorflow:
     runs-on: ubuntu-latest
     steps:
+    
+      - name: Clone this repo
+        uses: actions/checkout@master
+        with:
+            path: .
+         
       - name: Clone Tensorflow
         uses: actions/checkout@v2
         with:
@@ -38,7 +44,6 @@ jobs:
         run: rm -rf tensorflow-master
 
       - name: Commit files
-        uses: actions/checkout@v2
       - run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
