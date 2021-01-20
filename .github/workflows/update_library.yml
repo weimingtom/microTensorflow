@@ -39,12 +39,13 @@ jobs:
       - name: remove tf and third_party if they exist
         run: rm -rf tensorflow && rm -rf third_party
     
-      - name: commit changes
-        run:  |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add -u
-          git commit -m "removed old tf lite and third party"
+      # commented out because I think git is smart
+      #- name: commit changes
+        #run:  |
+         # git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        #  git config --local user.name "github-actions[bot]"
+        #  git add -u
+        #  git commit -m "removed old tf lite and third party"
 
       - name: copy tf over
         run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/tensorflow .
