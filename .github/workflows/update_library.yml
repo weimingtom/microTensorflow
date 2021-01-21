@@ -3,9 +3,9 @@
 name: generate_project_files
 
 # Controls when the action will run. 
-on:
-    schedule:
-        - cron: "0 0 * * *"
+on: push
+    #schedule:
+    #    - cron: "0 0 * * *"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -74,6 +74,20 @@ jobs:
       - name: copy cmsis into third_party
         run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis tflite-micro-cmsis/third_party/cmsis
 
+      - name: clean cmsis folder
+        run: |
+            cd tflite-micro-cmsis/third_party/cmsis
+            rm .gitignore .gitattributes ARMCMSIS.pdsc "Scalable Software Stack.pdf" linter.py manifest
+            rm -rf Device CMSIS/CoreValidation CMSIS/Core_A CMSIS/DAP CMSIS/DoxyGen CMSIS/Driver CMSIS/Pack CMSIS/RTOS CMSIS/RTOS2 CMSIS/Utilities
+            cd CMSIS
+            rm -rf Core/Template
+            find DSP -mindepth 1 ! -regex '^DSP/Include\(/.*\)?' -delete
+            rm -rf NN/Examples
+            rm -rf NN/NN_Lib_Tests
+            rm -rf NN/Scripts
+            rm -rf NN/Tests
+            rm NN/.gitignore 
+
       - name: remove tools folder
         run: rm -rf tflite-micro-cmsis/tensorflow/lite/micro/tools
 
@@ -105,6 +119,9 @@ jobs:
         
       - name: remove tensorflow
         run: rm -rf tensorflow-master
+
+      - name: remove all cmakelists.txt
+        run: find . -name "CMakeLists.txt" -delete
 
       - name: Commit files
         run: |
