@@ -3,9 +3,9 @@
 name: generate_project_files
 
 # Controls when the action will run. 
-on:
-    schedule:
-        - cron: "0 0 * * *"
+on: push
+#    schedule:
+#        - cron: "0 0 * * *"
     
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -38,6 +38,48 @@ jobs:
 
       - name: remove tf and third_party if they exist
         run: rm -rf tensorflow && rm -rf third_party
+
+      - name: copy tf over
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/tensorflow .
+
+      - name: copy 3rd party over
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party .
+    
+      - name: removing hello_world_example
+        run: rm -rf tensorflow/lite/micro/examples
+        
+      - name: clean tf generated
+        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile clean && make -f tensorflow/lite/micro/tools/make/Makefile clean_downloads
+    
+      - name: generate cmsis projects
+        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile OPTIMIZED_KERNEL_DIR=cmsis-nn generate_hello_world_make_project 
+    
+      - name: make cmsis folder
+        run: mkdir cmsis-projects
+
+      - name: copy tf cmsis over
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/tensorflow cmsis-projects/
+
+      - name: copy 3rd party over
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party cmsis-projects/
+
+      - name: copy cmsis into third_party
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis cmsis-projects/third_party/cmsis
+
+      - name: removing hello_world_example2
+        run: rm -rf cmsis-projects/tensorflow/lite/micro/examples
+
+      - name: clean tf generated 2
+        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile clean && make -f tensorflow/lite/micro/tools/make/Makefile clean_downloads
+
+      - name: generate ethosu projects
+        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile TARGET=cortex_m_generic TARGET_ARCH=cortex-m7 OPTIMIZED_KERNEL_DIR=ethos-u generate_hello_world_make_project 
+
+      - name: copy cmsis for ethosu
+        run: cp -r cmsis-projects ethosu-projects
+
+      - name: copy ethosu into third_party
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/ethosu cmsis-projects/third_party/ethosu
     
       # commented out because I think git is smart
       #- name: commit changes
@@ -46,12 +88,6 @@ jobs:
         #  git config --local user.name "github-actions[bot]"
         #  git add -u
         #  git commit -m "removed old tf lite and third party"
-
-      - name: copy tf over
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/tensorflow .
-
-      - name: copy 3rd party over
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party .
         
       - name: remove tensorflow
         run: rm -rf tensorflow-master
