@@ -37,13 +37,22 @@ jobs:
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile generate_hello_world_make_project 
 
       - name: remove tf and third_party if they exist
-        run: rm -rf tensorflow && rm -rf third_party
+        run: rm -rf tflite-micro
+
+      - name: remove tf-lite-micro-cmsis
+        run: rm -rf tflite-micro-cmsis
+
+      - name: remove tf-lite-micro-ethosu
+        run: rm -rf tflite-micro-ethosu
+
+      - name: make tf-lite-micro folder
+        run: mkdir tflite-micro
 
       - name: copy tf over
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/tensorflow .
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/tensorflow tflite-micro/ 
 
       - name: copy 3rd party over
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party .
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party tflite-micro/ 
     
       - name: removing hello_world_example
         run: rm -rf tensorflow/lite/micro/examples
@@ -55,31 +64,37 @@ jobs:
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile OPTIMIZED_KERNEL_DIR=cmsis-nn generate_hello_world_make_project 
     
       - name: make cmsis folder
-        run: mkdir cmsis-projects
+        run: mkdir tflite-micro-cmsis
 
       - name: copy tf cmsis over
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/tensorflow cmsis-projects/
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/tensorflow tflite-micro-cmsis/ 
 
       - name: copy 3rd party over
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party cmsis-projects/
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party tflite-micro-cmsis/ 
 
       - name: copy cmsis into third_party
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis cmsis-projects/third_party/cmsis
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis tflite-micro-cmsis/third_party/cmsis
+
+      - name: remove tools folder
+        run: rm -rf tflite-micro-cmsis/tensorflow/lite/micro/tools
 
       - name: removing hello_world_example2
         run: rm -rf cmsis-projects/tensorflow/lite/micro/examples
 
-      - name: clean tf generated 2
+      - name: clean tf generated2
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile clean && make -f tensorflow/lite/micro/tools/make/Makefile clean_downloads
 
       - name: generate ethosu projects
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile TARGET=cortex_m_generic TARGET_ARCH=cortex-m7 OPTIMIZED_KERNEL_DIR=ethos-u generate_hello_world_make_project 
 
       - name: copy cmsis for ethosu
-        run: cp -r cmsis-projects ethosu-projects
+        run: cp -r tflite-micro-cmsis tflite-micro-ethosu 
 
       - name: copy ethosu into third_party
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/ethosu cmsis-projects/third_party/ethosu
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/ethosu tflite-micro-ethosu/third_party/ethosu
+
+      - name: remove tools folder2
+        run: rm -rf tflite-micro-ethosu/tensorflow/lite/micro/tools
     
       # commented out because I think git is smart
       #- name: commit changes
