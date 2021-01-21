@@ -3,10 +3,9 @@
 name: generate_project_files
 
 # Controls when the action will run. 
-on: push
-#    schedule:
-#        - cron: "0 0 * * *"
-    
+on:
+    schedule:
+        - cron: "0 0 * * *"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
