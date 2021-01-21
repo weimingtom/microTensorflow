@@ -55,7 +55,7 @@ jobs:
         run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party tflite-micro/ 
     
       - name: removing hello_world_example
-        run: rm -rf tensorflow/lite/micro/examples
+        run: rm -rf tflite-micro/tensorflow/lite/micro/examples
         
       - name: clean tf generated
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile clean && make -f tensorflow/lite/micro/tools/make/Makefile clean_downloads
@@ -79,7 +79,7 @@ jobs:
         run: rm -rf tflite-micro-cmsis/tensorflow/lite/micro/tools
 
       - name: removing hello_world_example2
-        run: rm -rf cmsis-projects/tensorflow/lite/micro/examples
+        run: rm -rf tflite-micro-cmsis/tensorflow/lite/micro/examples
 
       - name: clean tf generated2
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile clean && make -f tensorflow/lite/micro/tools/make/Makefile clean_downloads
