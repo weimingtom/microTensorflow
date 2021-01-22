@@ -98,7 +98,7 @@ jobs:
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile clean && make -f tensorflow/lite/micro/tools/make/Makefile clean_downloads
 
       - name: generate ethosu projects
-        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile TARGET=cortex_m_generic TARGET_ARCH=cortex-m7 OPTIMIZED_KERNEL_DIR=ethos-u generate_hello_world_make_project 
+        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile -j8 TARGET=cortex_m_generic TARGET_ARCH=cortex-m55 OPTIMIZED_KERNEL_DIR=cmsis-nn CO_PROCESSOR=ethos-u generate_hello_world_make_project 
 
       - name: copy cmsis for ethosu
         run: cp -r tflite-micro-cmsis tflite-micro-ethosu 
