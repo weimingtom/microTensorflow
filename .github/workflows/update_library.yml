@@ -94,20 +94,20 @@ jobs:
       - name: removing hello_world_example2
         run: rm -rf tflite-micro-cmsis/tensorflow/lite/micro/examples
 
-      - name: clean tf generated2
-        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile clean && make -f tensorflow/lite/micro/tools/make/Makefile clean_downloads
+     # - name: clean tf generated2
+     #   run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile clean && make -f tensorflow/lite/micro/tools/make/Makefile clean_downloads
 
-      - name: generate ethosu projects
-        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile -j8 TARGET=cortex_m_generic TARGET_ARCH=cortex-m55 OPTIMIZED_KERNEL_DIR=cmsis-nn CO_PROCESSOR=ethos-u generate_hello_world_make_project 
+     # - name: generate ethosu projects
+     #   run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile -j8 TARGET=cortex_m_generic TARGET_ARCH=cortex-m55 OPTIMIZED_KERNEL_DIR=cmsis-nn CO_PROCESSOR=ethos-u generate_hello_world_make_project 
 
-      - name: copy cmsis for ethosu
-        run: cp -r tflite-micro-cmsis tflite-micro-ethosu 
+     # - name: copy cmsis for ethosu
+     #   run: cp -r tflite-micro-cmsis tflite-micro-ethosu 
 
-      - name: copy ethosu into third_party
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/ethosu tflite-micro-ethosu/third_party/ethosu
+     # - name: copy ethosu into third_party
+     #   run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/ethosu tflite-micro-ethosu/third_party/ethosu
 
-      - name: remove tools folder2
-        run: rm -rf tflite-micro-ethosu/tensorflow/lite/micro/tools
+     # - name: remove tools folder2
+     #   run: rm -rf tflite-micro-ethosu/tensorflow/lite/micro/tools
     
       # commented out because I think git is smart
       #- name: commit changes
