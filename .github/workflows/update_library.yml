@@ -79,11 +79,11 @@ jobs:
             mkdir -p tflite-micro-cmsis/third_party/cmsis
             cp tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/LICENSE.txt tflite-micro-cmsis/third_party/cmsis/
             cp tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/README.md tflite-micro-cmsis/third_party/cmsis/
-            mkdir -p tflite-micro-cmsis/cmsis/CMSIS/Core
+            mkdir -p tflite-micro-cmsis/third_party/cmsis/CMSIS/Core
             cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/CMSIS/Core/Include tflite-micro-cmsis/third_party/cmsis/CMSIS/Core/
-            mkdir -p tflite-micro-cmsis/cmsis/CMSIS/DSP
+            mkdir -p tflite-micro-cmsis/third_party/cmsis/CMSIS/DSP
             cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/CMSIS/DSP/Include/ tflite-micro-cmsis/third_party/cmsis/CMSIS/DSP/
-            mkdir -p tflite-micro-cmsis/cmsis/CMSIS/NN/
+            mkdir -p tflite-micro-cmsis/third_party/cmsis/CMSIS/NN/
             cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/CMSIS/NN/Include/ tflite-micro-cmsis/third_party/cmsis/CMSIS/NN/
             cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/CMSIS/NN/Source/ tflite-micro-cmsis/third_party/cmsis/CMSIS/NN/
             rm -rf tflite-micro-cmsis/tensorflow/lite/micro/tools
