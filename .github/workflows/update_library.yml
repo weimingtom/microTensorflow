@@ -33,7 +33,7 @@ jobs:
           pip install --upgrade six
           
       - name: generate projects
-        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile generate_hello_world_make_project -j8 
+        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile generate_hello_world_make_project -j8 || true && make -f tensorflow/lite/micro/tools/make/Makefile generate_hello_world_make_project -j8
 
       - name: remove tf and third_party if they exist
         run: rm -rf tflite-micro
