@@ -52,6 +52,9 @@ jobs:
 
       - name: copy 3rd party over
         run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party tflite-micro/ 
+
+      - name: copy readme and license
+        run: cp tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/README_MAKE.md tflite-micro/readme.md && cp tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/LICENSE tflite-micro/LICENSE
     
       - name: removing hello_world_example
         run: rm -rf tflite-micro/tensorflow/lite/micro/examples
