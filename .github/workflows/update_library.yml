@@ -63,7 +63,7 @@ jobs:
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile clean && make -f tensorflow/lite/micro/tools/make/Makefile clean_downloads
     
       - name: generate cmsis projects
-        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile OPTIMIZED_KERNEL_DIR=cmsis_nn generate_hello_world_make_project -j8 
+        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile OPTIMIZED_KERNEL_DIR=cmsis_nn generate_hello_world_make_project -j8 || true && make -f tensorflow/lite/micro/tools/make/Makefile OPTIMIZED_KERNEL_DIR=cmsis_nn generate_hello_world_make_project -j8
     
       - name: make cmsis folder
         run: mkdir tflite-micro-cmsis
@@ -74,37 +74,28 @@ jobs:
       - name: copy 3rd party over
         run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party tflite-micro-cmsis/ 
 
-      - name: copy cmsis into third_party
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis tflite-micro-cmsis/third_party/cmsis
-
       - name: clean cmsis folder
         run: |
-            cd tflite-micro-cmsis/third_party/cmsis
-            rm .gitignore .gitattributes ARMCMSIS.pdsc "Scalable Software Stack.pdf" linter.py manifest
-            rm -rf Device CMSIS/CoreValidation CMSIS/Core_A CMSIS/DAP CMSIS/DoxyGen CMSIS/Driver CMSIS/Pack CMSIS/RTOS CMSIS/RTOS2 CMSIS/Utilities
-            cd CMSIS
-            rm -rf Core/Template
-            find DSP -mindepth 1 ! -regex '^DSP/Include\(/.*\)?' -delete
-            rm -rf NN/Examples
-            rm -rf NN/NN_Lib_Tests
-            rm -rf NN/Scripts
-            rm -rf NN/Tests
-            rm NN/.gitignore 
-
-      - name: remove tools folder
-        run: rm -rf tflite-micro-cmsis/tensorflow/lite/micro/tools
-
-      - name: removing hello_world_example2
-        run: rm -rf tflite-micro-cmsis/tensorflow/lite/micro/examples
-
+            mkdir -p tflite-micro-cmsis/cmsis
+            cp tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/LICENSE.txt tflite-micro-cmsis/cmsis/
+            cp tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/README.md tflite-micro-cmsis/cmsis/
+            mkdir -p tflite-micro-cmsis/cmsis/CMSIS/Core
+            cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/CMSIS/Core/Include tflite-micro-cmsis/cmsis/CMSIS/Core/
+            mkdir -p tflite-micro-cmsis/cmsis/CMSIS/DSP
+            cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/CMSIS/DSP/Include/ tflite-micro-cmsis/cmsis/CMSIS/DSP/
+            mkdir -p tflite-micro-cmsis/cmsis/CMSIS/NN/
+            cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/CMSIS/NN/Include/ tflite-micro-cmsis/cmsis/CMSIS/NN/
+            cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/cmsis/CMSIS/NN/Source/ tflite-micro-cmsis/cmsis/CMSIS/NN/
+            rm -rf tflite-micro-cmsis/tensorflow/lite/micro/tools
+            rm -rf tflite-micro-cmsis/tensorflow/lite/micro/examples
+            cd tflite-micro-cmsis
+            find . -name "CMakeLists.txt" -delete
+            
       - name: clean tf generated2
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile clean && make -f tensorflow/lite/micro/tools/make/Makefile clean_downloads
 
       - name: generate ethosu projects
-        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile TARGET=cortex_m_generic TARGET_ARCH=cortex-m55  OPTIMIZED_KERNEL_DIR=cmsis_nn CO_PROCESSOR=ethos_u generate_hello_world_make_project -j8 
-
-        #- name: copy cmsis for ethosu
-        #   run: cp -r tflite-micro-cmsis tflite-micro-ethosu 
+        run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile TARGET=cortex_m_generic TARGET_ARCH=cortex-m55  OPTIMIZED_KERNEL_DIR=cmsis_nn CO_PROCESSOR=ethos_u generate_hello_world_make_project -j8 || true && make -f tensorflow/lite/micro/tools/make/Makefile TARGET=cortex_m_generic TARGET_ARCH=cortex-m55  OPTIMIZED_KERNEL_DIR=cmsis_nn CO_PROCESSOR=ethos_u generate_hello_world_make_project -j8 
 
       - name: copy tf ethosu over
         run: cp -r tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/tensorflow tflite-micro-ethosu/
@@ -113,7 +104,7 @@ jobs:
         run: cp -r tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/third_party tflite-micro-ethosu/
 
       - name: copy ethosu into third_party
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/ethosu tflite-micro-ethosu/third_party/ethosu
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/ethosu tflite-micro-ethosu/third_party/ethosu && rm -rf tflite-micro-ethosu/third_party/CMakeLists.txt
 
       - name: remove tools folder2
         run: rm -rf tflite-micro-ethosu/tensorflow/lite/micro/tools
@@ -123,20 +114,9 @@ jobs:
 
       - name: copy over cmsis from cmsis to ethosu
         run: cp -r tflite-micro-cmsis/third_party/cmsis tflite-micro-ethosu/third_party/
-    
-      # commented out because I think git is smart
-      #- name: commit changes
-        #run:  |
-         # git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        #  git config --local user.name "github-actions[bot]"
-        #  git add -u
-        #  git commit -m "removed old tf lite and third party"
-        
+            
       - name: remove tensorflow
         run: rm -rf tensorflow-master
-
-      - name: remove all cmakelists.txt
-        run: find . -name "CMakeLists.txt" -delete
 
       - name: Commit files
         run: |
