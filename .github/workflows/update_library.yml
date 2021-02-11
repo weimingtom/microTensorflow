@@ -74,6 +74,9 @@ jobs:
       - name: copy 3rd party over
         run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/third_party tflite-micro-cmsis/ 
 
+      - name: copy readme and license2
+        run: cp tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/README_MAKE.md tflite-micro-cmsis/readme.md && cp tensorflow-master/tensorflow/lite/micro/tools/make/gen/linux_x86_64_default/prj/hello_world/make/LICENSE tflite-micro-cmsis/LICENSE
+
       - name: clean cmsis folder
         run: |
             mkdir -p tflite-micro-cmsis/third_party/cmsis
@@ -98,13 +101,16 @@ jobs:
         run: cd tensorflow-master && make -f tensorflow/lite/micro/tools/make/Makefile TARGET=cortex_m_generic TARGET_ARCH=cortex-m55  OPTIMIZED_KERNEL_DIR=cmsis_nn CO_PROCESSOR=ethos_u generate_hello_world_make_project -j8 || true && make -f tensorflow/lite/micro/tools/make/Makefile TARGET=cortex_m_generic TARGET_ARCH=cortex-m55  OPTIMIZED_KERNEL_DIR=cmsis_nn CO_PROCESSOR=ethos_u generate_hello_world_make_project -j8 
 
       - name: copy tf ethosu over
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/tensorflow tflite-micro-ethosu/
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/tensorflow/ tflite-micro-ethosu/tensorflow
 
-      - name: copy thrid_party ethosu over
-        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/third_party tflite-micro-ethosu/
+      - name: copy third_party ethosu over
+        run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/third_party/ tflite-micro-ethosu/third_party
 
       - name: copy ethosu into third_party
         run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/ethosu tflite-micro-ethosu/third_party/ethosu && rm -rf tflite-micro-ethosu/third_party/CMakeLists.txt
+
+      - name: copy readme and license2
+        run: cp tensorflow-master/tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/README_MAKE.md tflite-micro-cmsis/readme.md && cp tensorflow-master/tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/LICENSE tflite-micro-cmsis/LICENSE
 
       - name: remove tools folder2
         run: rm -rf tflite-micro-ethosu/tensorflow/lite/micro/tools
