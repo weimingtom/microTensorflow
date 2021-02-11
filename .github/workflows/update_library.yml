@@ -113,7 +113,7 @@ jobs:
         run: cp -r tensorflow-master/tensorflow/lite/micro/tools/make/downloads/ethosu tflite-micro-ethosu/third_party/ethosu && rm -rf tflite-micro-ethosu/third_party/CMakeLists.txt
 
       - name: copy readme and license2
-        run: cp tensorflow-master/tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/README_MAKE.md tflite-micro-cmsis/readme.md && cp tensorflow-master/tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/LICENSE tflite-micro-cmsis/LICENSE
+        run: cp tensorflow-master/tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/README_MAKE.md tflite-micro-ethosu/readme.md && cp tensorflow-master/tensorflow/lite/micro/tools/make/gen/cortex_m_generic_cortex-m55_default/prj/hello_world/make/LICENSE tflite-micro-ethosu/LICENSE
 
       - name: remove tools folder2
         run: rm -rf tflite-micro-ethosu/tensorflow/lite/micro/tools
